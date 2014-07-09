@@ -38,17 +38,16 @@ def Check_dir(os_dir):
             print os_dir, "does not exist."
             exit(1)
     
-def Exclusions():
-    exclusions = []
-    if args.exclude:
-        for argument in args.exclude:
-            exclusions.append("--exclude={}".format(argument))
-    return exclusions
 
 def Make_tar(source_dir, destination):
-    fileName=destination+"Backup-"+str(date.today())+".tar"
-    with tarfile.open(fileName, "w:gz") as tar:
-        tar.add(source_dir, arcname=os.path.basename(source_dir))
+    tar = tarfile.open(os.path.join(destination, 'Backup-'+str(date.today())+'.tar.gz'), 'w:gz')
+
+    for item in os.listdir(backupdir):
+        tar.add(os.path.join(backupdir, item),arcname="Backup/"+item)
+        
+    tar.close()
+    
+
         
 def Main():
     Get_vars()
