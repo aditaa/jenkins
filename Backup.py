@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import tarfile , argparse, os
-from datetime import date 
+from datetime import datetime
 from shutil import copyfile
 
 """Backup a dir
@@ -44,7 +44,7 @@ def Check_dir(os_dir):
 
 def Make_tar(source_dir, destination):
     print "Starting backup"
-    tar = tarfile.open(os.path.join(destination, 'Backup-'+str(date.today())+'.tar.gz'), 'w:gz')
+    tar = tarfile.open(os.path.join(destination, 'Backup-'+timestamp+'.tar.gz'), 'w:gz')
 
     for item in os.listdir(backupdir):
         print "Adding " +item
@@ -55,10 +55,13 @@ def Make_tar(source_dir, destination):
 
 def Copy_to_current(destination):
     print "copying backup-date to backup-current"
-    copyfile(os.path.join(destination, 'Backup-'+str(date.today())+'.tar.gz'), os.path.join(destination, 'Backup-Current.tar.gz'))
+    copyfile(os.path.join(destination, 'Backup-'+timestamp+'.tar.gz'), os.path.join(destination, 'Backup-Current.tar.gz'))
     print "Complete"
         
 def Main():
+    global timestamp
+    #set timestamp
+    timestamp = datetime.today().strftime("%a-%b-%d-%Y_%H:%M:%S")
     Get_vars()
     Check_dir(backupdir)
     Make_tar(backupdir, destination)
