@@ -2,6 +2,7 @@
 
 import tarfile , argparse, os
 from datetime import date 
+from shutil import copyfile
 
 """Backup a dir
 
@@ -11,7 +12,7 @@ usage: Backup.py [-h] source_dir dest_dir
 __author__ = "Daniel Shirley"
 __credits__ = ["Daniel Shirley"]
 __license__ = "GPL v.2"
-__version__ = "0.2"
+__version__ = "0.21"
 __maintainer__ = "Daniel Shirley"
 __email__ = "aditaa@ig2ad.com"
 __status__ = "Production"
@@ -52,12 +53,16 @@ def Make_tar(source_dir, destination):
     tar.close()
     print "Complete"
 
+def Copy_to_current(destination):
+    print "copying backup-date to backup-current"
+    copyfile(os.path.join(destination, 'Backup-'+str(date.today())+'.tar.gz'), os.path.join(destination, 'Backup-Current.tar.gz'))
+    print "Complete"
         
 def Main():
     Get_vars()
     Check_dir(backupdir)
     Make_tar(backupdir, destination)
-
+    Copy_to_current(destination)
 
 if __name__ == '__main__':
     Main()
